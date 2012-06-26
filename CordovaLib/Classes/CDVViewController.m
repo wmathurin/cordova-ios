@@ -156,19 +156,6 @@
     
     ///////////////////
     
-	NSString* startFilePath = [self pathForResource:self.startPage];
-	NSURL* appURL  = nil;
-    NSString* loadErr = nil;
-    
-    if (startFilePath == nil) {
-        loadErr = [NSString stringWithFormat:@"ERROR: Start Page at '%@/%@' was not found.", self.wwwFolderName, self.startPage];
-        NSLog(@"%@", loadErr);
-        self.loadFromString = YES;
-        appURL = nil;
-    } else {
-        appURL = [NSURL fileURLWithPath:startFilePath];
-    }
-    
     //// Fix the iOS 5.1 SECURITY_ERR bug (CB-347), this must be before the webView is instantiated ////
 
     [CDVLocalStorage __verifyAndFixDatabaseLocations];
@@ -230,13 +217,7 @@
     
     ///////////////////
     
-    if (!loadErr) {
-        NSURLRequest *appReq = [NSURLRequest requestWithURL:appURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20.0];
-        [self.webView loadRequest:appReq];
-    } else {
-        NSString* html = [NSString stringWithFormat:@"<html><body> %@ </body></html>", loadErr];
-        [self.webView loadHTMLString:html baseURL:nil];
-    }
+    [self loadStartPageIntoWebView];
 }
 
 - (NSArray*) parseInterfaceOrientations:(NSArray*)orientations
@@ -374,6 +355,30 @@
 		[self.view sendSubviewToBack:self.webView];
 		
 		self.webView.delegate = self;
+    }
+}
+
+- (void)loadStartPageIntoWebView
+{
+    NSString* startFilePath = [self pathForResource:self.startPage];
+	NSURL* appURL  = nil;
+    NSString* loadErr = nil;
+    
+    if (startFilePath == nil) {
+        loadErr = [NSString stringWithFormat:@"ERROR: Start Page at '%@/%@' was not found.", self.wwwFolderName, self.startPage];
+        NSLog(@"%@", loadErr);
+        self.loadFromString = YES;
+        appURL = nil;
+    } else {
+        appURL = [NSURL fileURLWithPath:startFilePath];
+    }
+    
+    if (!loadErr) {
+        NSURLRequest *appReq = [NSURLRequest requestWithURL:appURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20.0];
+        [self.webView loadRequest:appReq];
+    } else {
+        NSString* html = [NSString stringWithFormat:@"<html><body> %@ </body></html>", loadErr];
+        [self.webView loadHTMLString:html baseURL:nil];
     }
 }
 

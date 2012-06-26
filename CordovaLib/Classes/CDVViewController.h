@@ -53,6 +53,12 @@
 
 - (void) printMultitaskingInfo;
 - (void) createGapView;
+
+/**
+ * Sets up the local start page and loads it into the web view.
+ */
+- (void)loadStartPageIntoWebView;
+
 - (CDVCordovaView*) newCordovaViewWithFrame:(CGRect)bounds;
 
 - (int) executeQueuedCommands;
