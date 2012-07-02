@@ -96,6 +96,11 @@ static NSArray* org_apache_cordova_CommandStatusMsgs;
 	return [[[self alloc] initWithStatus: statusOrdinal message: [NSNumber numberWithDouble: theMessage]] autorelease];
 }
 
++(CDVPluginResult*) resultWithStatus: (CDVCommandStatus) statusOrdinal messageAsBool: (BOOL) theMessage
+{
+	return [[[self alloc] initWithStatus: statusOrdinal message: [NSNumber numberWithBool: theMessage]] autorelease];
+}
+
 +(CDVPluginResult*) resultWithStatus: (CDVCommandStatus) statusOrdinal messageAsDictionary: (NSDictionary*) theMessage
 {
 	return [[[self alloc] initWithStatus: statusOrdinal message: theMessage] autorelease];
