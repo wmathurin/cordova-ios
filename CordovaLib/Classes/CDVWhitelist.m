@@ -32,7 +32,7 @@
 // Private constants
 
 // Localization key to find app-defined custom whitelist rejection message.
-static NSString * const kCDVWhitelistWhitelistRejectionFormatString = @"CDVWhitelistRejectionFormatString";
+static NSString * const kCDVWhitelistRejectionFormatString = @"CDVWhitelistRejectionFormatString";
 
 @implementation CDVWhitelist
 
@@ -183,8 +183,8 @@ static NSString * const kCDVWhitelistWhitelistRejectionFormatString = @"CDVWhite
 - (NSString*) errorStringForURL:(NSURL*)url
 {
     NSString *defaultErrorString = [NSString stringWithFormat:@"ERROR whitelist rejection: url='%@'", [url absoluteString]];
-    NSString *customErrorFormatString = NSLocalizedString(kCDVWhitelistWhitelistRejectionFormatString, @"An optional app-customized rejection message");
-    if ([customErrorFormatString isEqualToString:kCDVWhitelistWhitelistRejectionFormatString])
+    NSString *customErrorFormatString = NSLocalizedString(kCDVWhitelistRejectionFormatString, @"An optional app-customized rejection message");
+    if ([customErrorFormatString isEqualToString:kCDVWhitelistRejectionFormatString])
         return defaultErrorString;
     else
         return [NSString stringWithFormat:customErrorFormatString, [url absoluteString]];
