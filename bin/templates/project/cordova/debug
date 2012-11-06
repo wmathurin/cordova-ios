@@ -1,5 +1,4 @@
-
-#! /bin/bash
+#!/bin/bash
 
 #
 # Licensed to the Apache Software Foundation (ASF) under one
@@ -22,41 +21,24 @@
 
 #
 # compile and launch a Cordova/iOS project to the simulator
-# 
-# USAGE
-#   ./debug [path name] [project name]
 #
-# EXAMPLE
-#  ./debug ~/Desktop/MyProject MyProject
-#
+
 set -e
 
-function usage(){
-  echo "Usage: $0 [path to project] [name of project]"
-  exit 1
-}
+CORDOVA_PATH=$( cd "$( dirname "$0" )" && pwd )
+PROJECT_PATH=$CORDOVA_PATH/..
 
-# check arguments
-[ -z "$1" ] && usage
-[ -z "$2" ] && usage
+for file in $PROJECT_PATH/*.xcodeproj; do
+  PROJECT_NAME=$(basename "$file" .xcodeproj)
+done;
 
-PROJECT_PATH=${1:-"."}
-PROJECT_NAME=$2
-PRJ=$PROJECT_NAME.xcodeproj
-APP=build/Release-iphonesimulator/$PROJECT_NAME.app
+cd "$PROJECT_PATH"
+
+APP=build/$PROJECT_NAME.app
 SDK=`xcodebuild -showsdks | grep Sim | tail -1 | awk '{print $6}'`
 
-cd $PROJECT_PATH
+xcodebuild -project $PROJECT_NAME.xcodeproj -arch i386 -target $PROJECT_NAME -configuration Debug -sdk $SDK clean build VALID_ARCHS="i386" CONFIGURATION_BUILD_DIR="$PROJECT_PATH/build"
 
-xcodebuild -project $PRJ -sdk $SDK clean build
-
-# launch using ios-sim
-
-if which ios-sim >/dev/null; then
-    ios-sim launch $APP --stderr console.log --stdout console.log &
-else
-    echo -e '\033[31mError: ios-sim was not found. Please download, build and install version 1.4 or greater from https://github.com/phonegap/ios-sim into your path. Or "brew install ios-sim" using homebrew: http://mxcl.github.com/homebrew/\033[m'; exit 1;
-fi
 
 
 
