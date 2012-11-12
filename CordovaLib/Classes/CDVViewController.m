@@ -76,7 +76,6 @@
 
         self.wwwFolderName = @"www";
         self.startPage = @"index.html";
-        [self setWantsFullScreenLayout:YES];
 
         [self printMultitaskingInfo];
         [self printDeprecationNotice];
@@ -107,8 +106,8 @@
 
 - (void)printDeprecationNotice
 {
-    if (!IsAtLeastiOSVersion(@"4.2")) {
-        NSLog(@"CRITICAL: For Cordova 2.0, you will need to upgrade to at least iOS 4.2 or greater. Your current version of iOS is %@.",
+    if (!IsAtLeastiOSVersion(@"5.0")) {
+        NSLog(@"CRITICAL: For Cordova 2.0, you will need to upgrade to at least iOS 5.0 or greater. Your current version of iOS is %@.",
             [[UIDevice currentDevice] systemVersion]
             );
     }
@@ -216,8 +215,8 @@
     /*
      * Fire up CDVLocalStorage to work-around WebKit storage limitations: on all iOS 5.1+ versions for local-only backups, but only needed on iOS 5.1 for cloud backup.
      */
-    if (IsAtLeastiOSVersion(@"5.1") && (([backupWebStorage isEqualToString:@"local"]) ||
-            ([backupWebStorage isEqualToString:@"cloud"] && !IsAtLeastiOSVersion(@"6.0")))) {
+    if (IsAtLeastiOSVersion(@"5.1") && (([backupWebStorageType isEqualToString:@"local"]) ||
+            ([backupWebStorageType isEqualToString:@"cloud"] && !IsAtLeastiOSVersion(@"6.0")))) {
         [self registerPlugin:[[CDVLocalStorage alloc] initWithWebView:self.webView settings:[NSDictionary dictionaryWithObjectsAndKeys:
                     @"backupType", backupWebStorageType, nil]] withClassName:NSStringFromClass([CDVLocalStorage class])];
     }
@@ -705,7 +704,7 @@
     self.imageView.tag = 1;
     self.imageView.center = center;
 
-    self.imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth & UIViewAutoresizingFlexibleHeight & UIViewAutoresizingFlexibleLeftMargin & UIViewAutoresizingFlexibleRightMargin);
+    self.imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
     [self.imageView setTransform:startupImageTransform];
     [self.view.superview addSubview:self.imageView];
 
@@ -877,7 +876,7 @@ BOOL gSplashScreenShown = NO;
 - (void)onAppWillResignActive:(NSNotification*)notification
 {
     // NSLog(@"%@",@"applicationWillResignActive");
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('resign');"];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('resign');" scheduledOnRunLoop:NO];
 }
 
 /*
@@ -905,7 +904,7 @@ BOOL gSplashScreenShown = NO;
 - (void)onAppDidEnterBackground:(NSNotification*)notification
 {
     // NSLog(@"%@",@"applicationDidEnterBackground");
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('pause');"];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('pause', null, true);" scheduledOnRunLoop:NO];
 }
 
 // ///////////////////////
