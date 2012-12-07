@@ -22,6 +22,56 @@
 
 This document is for developers who need to upgrade their Cordova  plugins to a newer Cordova version. Starting with Cordova 1.5.0, some classes have been renamed, which will require the plugin to be upgraded. Make sure your project itself has been upgraded using the "Cordova Upgrade Guide" document.
 
+## Upgrading older Cordova plugins to 2.1.0 ##
+
+1. **Install** Cordova 2.1.0
+2. Follow the **"Upgrading older Cordova plugins to 2.0.0"** section, if necessary
+3. **Change** in the method signature of the **CordovaLib's JSONKit method categories**, they are prefixed with "cdvjk_" now:
+
+    e.g.
+    
+        [myDict cdvjk_JSONString];
+        
+   instead of:
+   
+        [myDict JSONString];
+        
+4. **Support** a new plugin method signature (old signature is deprecated):
+
+    The **new** signature is:
+
+        - (void) myMethod:(CDVInvokedUrlCommand*)command;
+
+    The **old (deprecated**) signature is:
+
+        - (void) myMethod:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options;
+
+    Basically, the options dictionary has been removed for the new signature, and the callbackId is not the 0th index item for the arguments array, but it is now in a separate property. View [CDVInvokedUrlCommand.h](https://github.com/apache/incubator-cordova-ios/blob/master/CordovaLib/Classes/CDVInvokedUrlCommand.h)
+    
+## Upgrading older Cordova plugins to 2.0.0 ##
+
+1. **Install** Cordova 2.0.0
+2. Follow the **"Upgrading older Cordova plugins to 1.9.0"** section, if necessary
+3. No changes in plugin structure from 1.9.x
+4. Change in import header use: in 2.0.0, Cordova projects use the CordovaLib project as a subproject, it now uses the CORDOVA_FRAMEWORK styled import like this:
+
+        #import <Cordova/CDV.h>
+        
+   instead of like this:
+   
+        #import "CDV.h"
+        
+    So now in 2.0.0, Cordova import headers are unified.
+    
+**NOTE:** The deprecated for 2.0.0 CDVPlugin methods **verifyArguments** and **appViewController** have been removed.
+
+## Upgrading older Cordova plugins to 1.9.0 ##
+
+1. **Install** Cordova 1.9.0
+2. Follow the **"Upgrading older Cordova plugins to 1.8.0"** section, if necessary
+3. No changes in plugin structure from 1.8.x
+
+
 ## Upgrading older Cordova plugins to 1.8.0 ##
 
 1. **Install** Cordova 1.8.0
@@ -40,7 +90,7 @@ This document is for developers who need to upgrade their Cordova  plugins to a 
 1. **Install** Cordova 1.6.x
 2. Follow the **"Upgrading older Cordova plugins to 1.5.0"** section, if necessary
 3. See the **1.6.0 Plugin Notes** section for new functionality available to plugins
-4. The global **"Cordova"** (upper-case C) was renamed to **"cordova"** (lower-case c) to match the cordova-js Android implementation in 1.5.0 that is now common to Android, Blackberry and iOS. Please rename your calls to reflect the new lower-case **c**, or you can add a shim (which will support older versions) like so:
+4. The global **"Cordova"** (upper-case C) was renamed to **"cordova"** (lower-case c) to match the cordova-js Android implementation in 1.5.0 that is now common to Android, BlackBerry and iOS. Please rename your calls to reflect the new lower-case **c**, or you can add a shim (which will support older versions) like so:
 
     a. Wrap your plugin JavaScript in a temporary scope (self-executing function) - see ["Temporary Scope"](http://ejohn.org/apps/learn/#57) or [this](https://github.com/phonegap/phonegap-plugins/wiki/Wrapping-your-Plugin's-JavaScript)
     
