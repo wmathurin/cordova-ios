@@ -746,9 +746,13 @@ static NSString* gOriginalUserAgent = nil;
     
     // iPhone launch images build in status bar height, so we need to adjust the frame to account for it.
     CGRect splashScreenFrame;
-    if (CDV_IsIPad()) {
+    NSInteger iosMajorVersion = [[[[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."] objectAtIndex:0] integerValue];
+    if (CDV_IsIPad() || iosMajorVersion >= 7) {
+        // iPhone splash screens don't build in the status bar in iOS 7 and greater.  iPads never did.
         splashScreenFrame = self.view.bounds;
     } else {
+        // It's an iPhone on a version of iOS earlier than 7.  Have to account for the status bar in the
+        // splash screen image.
         CGSize statusBarSize = [UIApplication sharedApplication].statusBarFrame.size;
         CGFloat statusBarHeight = MIN(statusBarSize.width, statusBarSize.height);
         splashScreenFrame = CGRectMake(self.view.bounds.origin.x,
