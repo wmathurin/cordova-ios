@@ -18,11 +18,377 @@
 # under the License.
 #
 -->
-## Release Notes for Cordova  ##
- 
- Cordova is a static library that enables developers to include the Cordova API in their iOS application projects easily, and also create new Cordova-based iOS application projects through the command-line.
+## Release Notes for Cordova (iOS) ##
 
- ### 2.3.0 (201212XX) ###
+Update these notes using: git log --pretty=format:'* %s' --topo-order --no-merges origin/2.7.x...HEAD
+
+Cordova is a static library that enables developers to include the Cordova API in their iOS application projects easily, and also create new Cordova-based iOS application projects through the command-line.
+
+### 3.2.0 (20131120) ###
+
+* CB-5124 - Remove splashscreen config.xml values from iOS Configuration Docs, move to plugin docs
+* CB-5229 - cordova/emulate important improvements (stderr, check ios-sim before build)
+* CB-5058 - CordovaLib xcode project gets assigned problematic Build Active Architecture Only settings.
+* CB-5217 - cordova emulate ios doesn't exit
+* CB-4805 - Update cordova/run and cordova/lib/install-device to use latest ios-deploy for iOS 7
+* CB-5103 - Fix cordova/run: --emulate should be --emulator (fix CLI usage)
+* CB-4872 - added iOS sdk version scripts
+* CB-5099 - Add missing icons especially iOS 7 120x120 icon to default template
+* CB-5037 - Fix bridge sometimes not resetting properly during page transitions
+* CB-4990 - Can't run emulator from cordova cli
+* CB-4978 - iOS - Remove HideKeyboardFormAccessoryBar and KeyboardShrinksView preferences in config.xml
+* CB-4935 - iOS - Remove Keyboard preferences code into its own plugin
+* Make CDVWebViewDelegate able to load pages after a failed load.
+* Prevented automatic logging of whitelist failures.
+
+### 3.1.0 (20131001) ###
+
+* [CB-3020] HideKeyboardFormAccessoryBar and KeyboardShrinksView show white bar instead of removing it
+* [CB-4799] Add update script for iOS.
+* [CB-4829] Xcode 5 simulated device names are different (and includes a new 64-bit device)
+* [CB-4827] iOS project/cordova/check\_reqs script should be used by all the scripts
+* [CB-4530] iOS bin/check\_reqs script should check for xcode 4.6 as minimum, and exit with code 2 if error occurs
+* [CB-4537] iOS bin/create script should copy check\_reqs script into project/cordova folder
+* [CB-4803] Set new iOS 7 preferences for the UIWebView in CDVViewController
+* [CB-4801] Add new iOS 7 properties for UIWebView in the config.xml &lt;preferences&gt;
+* [CB-4687] Fix Xcode 5 static analyzer issues
+* [CB-4469] Move copy-build-www-step.sh into scripts template
+* [CB-4539] Cannot create CDVViewController in Storyboard
+* [CB-4654] Wherein it is discovered that cp is too smart for its own good
+* [CB-4469] Move copy\_www.sh to cordova/lib/copy-www-build-step.sh
+* [CB-4654] Exclude platform scripts from template directory; copy those separately
+* [CB-4654] Allow default project template to be overridden on create
+* [CB-4706] Update compiler in CordovaLib.xcodeproj to "default compiler"
+* [CB-4707] Update compiler in default template xcodeproj to "default compiler"
+* [CB-4689] Update default template xcodeproj to Xcode 5 project settings
+* [CB-4688] CordovaLib.xcodeproj - update to Xcode 5 project settings
+* [CB-4691] Fix Xcode 5 warnings
+* [CB-4567] fix issue: "Benchmarks" ->"AutoBench" crashed on iOS
+* [CB-4469] Flip executable bit for copy_www.sh
+* [CB-4469] move copy resource script out of project file
+* [CB-4486] Give iOS plugins the ability to override URL loading
+* [CB-4408] Update cordova/emulate for new emulator build folder
+* [Cb-4336] modify cordova/run and cordova/install-device scripts to use ios-deploy (npm)
+* [CB-4408] Modify cordova/build script to build for device (armv7/armv7s)
+* [CB-4409] Remove build artifact folder on cordova/clean
+* [CB-4405] Increase Xcode minimum version to 4.6 in cordova/* scripts
+* [CB-4334] modify cordova/emulate and cordova/run scripts help text for ios-sim (available as npm module)
+* [CB-4331] require ios-sim version 1.7 in command line scripts
+* [CB-4355] Localstorage plugin handles options incorrectly (the settings key is specified with upper case chars)
+* [CB-4358] Trim amount of frameworks (18) in default template to minimum needed (4)
+* [CB-4095] Unify whitelist implementations
+* [CB-4281] Remove Echo files from Xcode project
+* [CB-4281] Moving echo to a plugin in MobileSpec
+* [CB-4277] Revert deleting of &lt;param name="onload" value="true" /&gt; support
+* [CB-3005] Add support for query parameters in StartPage url
+* CordovaTests project was missing the CordovaLib dependency: added
+* Update iOS whitelist tests
+* Fix ARC issue in start page tests (critical for Xcode5)
+
+### 3.0.0 (20130718) ###
+
+* [CB-3999] Video Capture ignores duration option [iOS]
+* [CB-4202] [CB-3681] Remove Contact plugin unit tests
+* [CB-4202] [CB-3653] Remove EXIF (Camera plugin) unit tests
+* [CB-4202] [CB-3726] Remove File Transfer plugin unit tests
+* [CB-4202] [CB-3973] Remove unit test dependency on Dialogs plugin
+* [CB-4202] [CB-1107] Remove unit tests for old plugin signature
+* [CB-4202] [CB-4145] Remove use of useSplashScreen property by unit tests
+* [CB-4095] Add some additional whitelist unit tests
+* [CB-2608] Remove deprecate EnableLocation key from the config.xml file
+* [CB-4104] Made config parameters case-insensitive.
+* [CB-3530] PhoneGap app crashes on iOS with error "CDVWebViewDelegate: Navigation started when state=1" (for navigation to an anchor on the same page)
+* [CB-3701] Removed Capture.bundle from default project template for 3.0.0
+* [CB-3530] Updated unit tests
+* [CB-4025] iOS emulate command broken when run inside the cordova folder
+* [CB-4037] Unable to Archive iOS projects for upload to App Store in 2.9
+* [CB-4088] `cordova emulate ios` replaces spaces in project name with underscores, conflicting with `cordova build ios` behavior
+* [CB-4145] Remove CDVViewController.useSplashScreen property
+* [CB-3175] Change <plugin> to <feature> in config.xml and remove deprecation notice in iOS
+* [CB-1107] Remove old plugin signature, update Plugin Dev Guide
+* [CB-2180] Convert iOS project template to use ARC
+* [CB-3448] bin/diagnose_project script fails if CORDOVALIB variable not in prefs plist
+* [CB-4199] iOS Platform Script `run --device` uses Simulator
+* [CB-3530] PhoneGap app crashes on iOS with error "CDVWebViewDelegate: Navigation started when state=1" (for navigation to an anchor on the same page)
+* [CB-3567] Redirect initiated in JavaScript fails the app from loading
+* Removed iphone/beep.wav since it is already contained in the dialogs core plugin
+* Have create script include .gitignore file.
+* Removed all core plugins (including console logger) to their own repos (install them using cordova-cli or plugman)
+
+### 2.9.0 (201306XX) ###
+
+* [CB-3469] Add a version macro for 2.8.0.
+* [CB-3469] Adding missing license found by RAT
+* [CB-2200] Remove device.name (deprecated)
+* [CB-3031] Fix for emulate script when project name has a space
+* [CB-3420] add hidden option to InAppBrowser
+* [CB-2840] Nil checks to avoid crash when network disconnected
+* [CB-3514] Remove partially-downloaded files when FileTransfer fails
+* [CB-2406] Add ArrayBuffer support to FileWriter.write
+* [CB-3757] camera.getPicture from photolib fails on iOS
+* [CB-3524] cordova/emulate and cordova/run silently fails when ios-sim is not installed
+* [CB-3526] typo in cordova/lib/install-emulator - does not check for ios-sim
+* [CB-3490] Update CordovaLib iOS Deployment Target in Project Setting to 5.0
+* [CB-3528] Update Plugin Upgrade Guide for iOS
+* [CB-3530] PhoneGap app crashes on iOS with error "CDVWebViewDelegate: Navigation started when state=1"
+* [CB-3768] Build to phone failing on Xcode 5 DP1 (OS X Mavericks)
+* [CB-3833] Deprecation plugin tag upgrade step has malformed xml
+* [CB-3743] Remove compatibility headers folder
+* [CB-3619] ./cordova/run script does not always call ./cordova/build first
+* [CB-3463] bin/create should copy cordova.js into the project's CordovaLib
+* [CB-3530] PhoneGap app crashes on iOS with error "CDVWebViewDelegate: Navigation started when state=1" (for navigation to an anchor on the same page)
+* [CB-3507] Wrong Linker Flag for project template
+* [CB-3458] remove all_load dependency. Use force load instead
+* Removing "build" from gitignore as one of our cli scripts is named build :)
+* Added/renamed CDVExifTests to test project.
+
+<br />
+
+### 2.8.0 (201305XX) ###
+
+* [CB-2840] Nil checks to avoid crash when network disconnected
+* [CB-3416] adding empty <plugins> element during deprecation window.
+* [CB-3006] Customize InAppBrowser location bar
+* [CB-3405] InAppBrowser option to hide bottom bar with Done/History buttons
+* [CB-3394] Cordova iOS crashes when multiple access elements in config.xml
+* [CB-3166] Add deprecation notice for use of <plugin> in config.xml in iOS
+* [CB-2905] Exif geolocation meta data tag writing
+* [CB-3307] Rename cordova-ios.js -> cordova.js
+* [CB-1108] Convert <plugin> -> <feature> with <param>
+* [CB-3321] Fix bogus "failed whitelist" log messages
+* [CB-3311] add default textbox for notification prompt
+* [CB-2846] SplashScreen crashes app when image not available
+* [CB-2789] Remove CaptureOptions.mode support.
+* [CB-3295] Send InAppBrowser loadstart events when redirects occur
+* [CB-2896] added ImageIO and OpenAL system frameworks to support new exif functionality in CDVCamera
+* [CB-2896] writing data to object through CGImageDestinationRef, enables multipart exif tag writing
+* [CB-2958] simple fix, moved write to photealbum code and sourced from modified data. Photo data returned by cordova will match photo on cameraroll
+* [CB-3339] add version to command line scripts
+* [CB-3377] Remove cordova/release script
+* [CB-2974] Add a ./cordova/lib/list-devices project-level helper script to iOS
+* [CB-2951] Add a ./cordova/lib/list-emulator-images project-level helper script to iOS
+* [CB-2974] Add a ./cordova/lib/list-devices project-level helper script to iOS
+* [CB-2966] Add a ./cordova/lib/list-started-emulators as project-level helper script to iOS
+* [CB-2990] Add a ./cordova/lib/install-device project-level helper script to iOS
+* [CB-2982] Add a ./cordova/lib/install-emulator project-level helper script to iOS
+* [CB-2998] Add a ./cordova/lib/start-emulator project-level helper script to iOS
+* [CB-2916] Add a ./cordova/clean project-level script for iOS
+* [CB-2053] Update UIImagePickerController label to reflect video media type in CDVCamera
+* [CB-3530] PhoneGap app crashes on iOS with error "CDVWebViewDelegate: Navigation started when state=1"
+
+<br />
+
+### 2.7.0 (201304XX) ###
+
+* Fix NPE in InAppBrowser's error callback.
+* [CB-2849] Fix bin/create when CordovaLib parent dir has a space
+* [CB-3069] Fix InAppBrowser load events (for non-redirecting pages)
+* InAppBrowser: Don't inject iframe bridge until necessary.
+* Fix FileTransfer unit test. HTTP Method was being set to null.
+* [CB-2305] Add InAppBrowser injectSriptCode command to support InAppBrowser.executeScript and InAppBrowser.insertCSS APIs
+* [CB-2653] Simplify InAppBrowser.injectScriptCode.
+* [CB-2537] Implement streaming downloads for FileTransfer
+* [CB-2190] Allow FileTransfer uploads to continue in background
+* [CB-1518] Request content length in parallel with download for gzipped content
+* [CB-2653] Delay executeScript/insertCSS callback until resources have loaded; pass JS results to callback
+* [CB-2824] Remove DebugConsole plugin
+* [CB-3066] Fire onNativeReady from JS, as bridge is available immediately
+* [CB-2725] Fix www deploy issues with symlinks
+* [CB-2725] follow links in www copy script
+* [CB-3039] iOS Exif date length mismtach
+* [CB-3052] iOS Exif SubIFD offsets incorrect
+* [CB-51] Added httpMethod for file transfer options (defaults to POST)
+* [CB-2732] Only set camera device when allowed.
+* [CB-2911] Updated resolveLocalFileSystemURI.
+* [CB-3032] Add whitelist support for custom schemes.
+* [CB-3048] Add --arc flag to create script, support arc in template.
+* [CB-3067]: fixing ios5 whitelist of file url
+* [CB-3067] Revert CDVURLProtocol to not whitelist file urls
+* [CB-2788] add ./bin/check_reqs script to iOS
+* [CB-2587] Added plugin timing for plugins that are loaded on startup (plugin 'onload' attribute)
+* [CB-2848] ShowSplashScreenSpinner not used
+* [CB-2960] Changing the volume of a sound already playing
+* [CB-3021] Can no longer import CDVPlugin.h from plugin Objective-C++ code
+* [CB-2790] added splice function to header writer: accepts jpeg as NSData, and splices in exif data specified by a string
+* [CB-2790] removed old splice code, replaced with JpegHeaderWriter api calls
+* [CB-2896] split writing of working tags off here, multipart tags not supported
+* [CB-2896] fixed error in exif subifd offset calculation for tag 8769
+* [CB-2902] re-added long/short tags to template dict, fixed subExifIFD offset
+* [CB-2698] Fix load detection when pages have redirects.
+* [CB-3295] Send InAppBrowser loadstart events when redirects occur
+
+<br />
+
+### 2.6.0 (20130401) ###
+
+* [CB-2732] Only set camera device when allowed.
+* [CB-2848] ShowSplashScreenSpinner not used
+* [CB-2790] added splice function to header writer: accepts jpeg as NSData, 
+* [CB-2790] removed old splice code, replaced with JpegHeaderWriter api call
+* [CB-1547] Scope notifications to WebViews
+* [CB-2461] Distinguish sub-frame from top-level loads in InAppBrowser.
+* [CB-2523] Add setting to shrink webview when keyboard pops up
+* [CB-2220] Fix splashscreen origin when status bar is present
+* [CB-2220] Size the splash screen in the same way as the launch image
+* [CB-2389] Fix page load detection for late-loaded iframes
+* [CB-2220] Fix splash screen positioning when image is the size of device
+* [CB-2631] Fix crash when bad url given to FT.upload
+* [CB-2652] Make FileReader.readAs*() functions run on a background thread
+* [CB-2633] Add FileReader.readAsBinaryString()
+* [CB-2308] Correctly delegate to CDVInAppBrowser webView:didFailLoadWithError
+* [CB-2308] [ios] Report errors when InAppBrowser fails to load page
+* [CB-2527] Update iPad splash images to correct sizes
+* [CB-1452] Media position incorrect after being set beyond duration
+* [CB-2436] Wrong splashscreen is displayed when UILaunchImageFile is set
+* [CB-2634] Copy www fails w spaces in filenames
+* [CB-2618] xcode build from Network Drive Fails
+* [CB-2638] Fix iOS project warnings on Retina imgs
+* [CB-2491] Deprecate current Connection cell setting
+* [CB-2674] Add prompt to Notification API for iOS
+* [CB-2691] Splashscreen should block user interaction
+* [CB-2502] Fixing CDVViewController.commandDelegate property declaration
+* [CB-1933] Changed button labels to an array.
+* [CB-1688] Added a camera direction option.
+* [CB-2732] Only set camera device when allowed.
+* [CB-2530] [CB-2239] Multipart plugin result
+* [CB-2605] icon-72@2x.png not included in xcode project template
+* [CB-2545] Deprecate "EnableLocation" Project Setting - use the "onload" attribute of the <plugin> element
+* [CB-2384] Add new iOS Project Setting to suppress the form accessory bar above the keyboard
+* [CB-2195] Remove deprecated - iOS - BackupWebStorage Cordova.plist property change from boolean to string
+* [CB-2194] Remove deprecated - iOS - CDVCommandDelegate registerPlugin method
+* [CB-2699] Bug in dynamic loading of a plugin at CDVViewController's registerPlugin method
+* [CB-2384] Re-fix - Add new iOS Project Setting to suppress the form accessory bar above the keyboard
+* [CB-2759] Update www/ Application for iOS
+* [CB-2672] InAppBrowserBug fixed (not reporting actual URL after redirect)
+* [CB-861] Header support for FileTransfer download
+* Add a define that turns on logging of exec() bridge
+* Sort preferences in project template.
+* Add KeyboardShrinksView preference to project template
+* Revert accidentaly change in PluginResult that broke threading.
+* Remove NSLogs accidentally checked in.
+* Use noCopy versions of NSString init in Base64 code.
+* Add an associatedObject field to CDVPluginResult.
+* Uncrustified with v0.60 of the tool (up from 0.59).
+* Make sure version of uncrustify is correct in the pre-commit hook
+* Remove some unnecessary argument checks in CDVNotification
+* Implement readAsArrayBuffer
+* Changed UIWebViewBounce to DisallowOverscroll.
+* Retain cycle fix
+* Fixed static analyzer issues.
+* Interim .js for [CB-52] FileTransfer Basic Auth
+* Added KeyboardShrinksView preference to CordovaLibTest config.xml
+* Added \__CORDOVA_IOS\__ macro
+
+< br />
+
+### 2.5.0 (20130301) ###
+
+* [CB-2395] Fix CDVViewController UserAgent lock
+* [CB-2207] Use a custom script for www/ copying.
+* [CB-2275] Add NSURLCache to app template.
+* [CB-2433] Deprecation notice for window.Settings
+* [CB-2276] Add whitelist method to CommandDelegate
+* [CB-2276] Remove CDVViewController from CDVLocation
+* [CB-2276] Remove CDVViewController from CDVSound
+* [CB-2276] Remove CDVViewController CDVCapture
+* [CB-1547] Ignore iframe navigations in webview delegate methods
+* [CB-1547] Take two: Ignore iframe navigations in webview delegate methods
+* [CB-2443] Add pluginInitialize method to CDVPlugin.
+* [CB-2443] Removed classSettings initializer from CDVPlugin
+* [CB-1693] Allow plugins to be loaded on start-up.
+* [CB-2276] Move Splashscreen logic out of CDVViewController
+* [CB-2389] Distinguish top-level from sub-frame navigations.
+* [CB-571] Media updates
+* [CB-2213] Added NATIVE_URI to getFileMetadata.
+* [CB-2213] Added NATIVE_URI to readAsDataURL.
+* [CB-2213] Added NATIVE_URI to getMetadata.
+* [CB-2213] Added NATIVE_URI to three methods.
+* [CB-2213] Added the AssetsLibrary framework.
+* [CB-2213] Added NATIVE_URI to copyTo and moveTo.
+* [CB-2213] Updated errors for write and truncate.
+* [CB-2213] Updated a NATIVE_URI error (getParent).
+* [CB-2213] Added NATIVE_URI to FileTransfer.upload.
+* [CB-2213] Skipped image scaling when possible.
+* [CB-2213] Added native URI request handling.
+* [CB-2411] Added camera popover repositioning.
+* [CB-2379] Update CordovaLib Project Settings according to Xcode 4.6 recommendations
+* [CB-2334] Add "body" property to FileTransferError object on iOS
+* [CB-2342] Media API allows non-whitelisted audio to be played
+* [CB-2324] iOS config.xml document should use <widget> instead of <cordova>
+* [CB-2469] Update JavaScript for iOS (2.5.0rc1)
+* CDVWebViewDelegate header was not public.
+* [CB-2516] Additional Plugin Note on Upgrading from 2.3.0 to 2.4.0
+* [CB-2510] [1/2] Updated Plugin Upgrade Guide for 2.4.0 -> 2.5.0
+* [CB-2544] Document "onload" attribute of <plugin> element in Plugin Upgrade Guide
+* [CB-2280, CB-2281] SplashScreen fade and rotation
+* Run uncrustify on CDVPlugin.m
+* Uncrustify CDVFile and CDVFileTransfer
+* Use correct MIME-type for asset-library responses.
+* Add option for ipad/iphone in cordova/emulate
+* Make CDVLocalStorage use onReset
+* Add a notification so plugins will know when page loads occur.
+* Change default value of splash screen fade to be quicker.
+* Implement useSplashScreen without using a setting
+* Don't call onReset for iframe navigation
+* function name was wrong (case sensitive)
+* Fix /bin/create script to work with GNU sed in path
+
+<br />
+
+### 2.4.0 (20130205) ###
+
+* Make cordova_plist_to_config_xml able to handle binary plist files
+* Ran splashscreen images through ImageOptim.
+* [ios] Remove %-escaping version of FileReader.readAsText()
+* Fix trying to mutate an immutable NSArray in CDVInvokedUrlCommand.
+* Fix FileTransfer.download failing for file: URLs.
+* Fix setting of _nativeReady when cordova.js is lazy-loaded.
+* Fix NPE when PDF is opened in InAppBrowser.
+* Refactor User-Agent logic into a helper class.
+* Fix for CB-2225
+* Remove a debugging log statement.
+* Add a code comment that points to the PDF/User-Agent JIRA issue.
+* Disable broken test.
+* Don't send callbacks when there are no listeners.
+* Fix InAppBrowser on iOS 5.
+* Fix CB-2271 - Multiple Cordova Views.
+* Fix usage message of update_cordova_subproject.
+* Delete obsolete instructions in bin/README.md
+* Fixes CB-2209 Contact ARC issues
+* including a manual relpath function
+* Add slice() support to readAsText.
+* Add slice() support to readAsDataURL.
+* Move start page to be specified in <content> tag.
+* Separate the echoArrayBuffer call from normal echo
+* Adding bool plugin result message, tests
+* iOS fix slow contact access due to photos temp file generation
+* [CB-2235] Fixed file transfer whitelisting.
+* [ios]CB-2189: support ArrayBuffer over exec bridge
+* [ios] CB-2215 - Implement ArrayBuffer native->js.
+* [ios] CB-2215 - Implement ArrayBuffer native->js.
+* CordovaLibTests - update project file for iOS 5 support.
+* cordova/run and cordova/emulate refer to old 'debug' script which has been renamed to 'build'
+* [CB-1495] iOS default splash screen images take up several megabytes
+* [CB-1849] Remove iOS 4/5 conditional code block, put in main block
+* [CB-2193] Remove deprecated - iOS - CDVViewController invokeString property
+* Fixed CB-2191 and CB-2192 (removal of deprecated methods)
+* [CB-1832] iOS: CDVCordovaView should not inherit from UIWebView
+* [CB-1946] iOS: Switch JSON serialization to NSJSONSerialization
+* Fixes static analyzer error for using mktemp (substituted with mkstemp)
+* [CB-2159] handleOpenURL not called on iOS
+* [CB-2063] InAppBrowser - support iPad presentation style, iOS transition styles
+* [CB-478] FileTransfer upload - handle "trustAllHosts" parameter
+* Interim js patch for [CB-2094] issue
+* [CB-2071] InAppBrowser: allow UIWebView settings like main CordovaWebView
+* Added interim js for latest changes.
+* Added whitelist unit test to check for query param matches
+* [CB-2290] iOS: 'CDVJSON.h' file not found when adding a plugin
+* Added a native uri option to DestinationType.
+* Added a namespace prefix to a constant.
+
+<br />
+
+### 2.3.0 (20130107) ###
 
 * [CB-1550] iOS build, debug, emulate scripts should check xcode version
 * [CB-1669] Issue an error when media.startRecord() is failing.
@@ -82,8 +448,9 @@
 * Add local notification #define, and stubbed method in AppDelegate.m
 * Add appdelegate method didReceiveLocalNotification and repost to NSNotification defaultCenter
 
+<br />
 
- ### 2.2.0 (20121031) ###
+### 2.2.0 (20121031) ###
 
 * [CB-622] FileTransfer interface should provide progress monitoring
 * [CB-622] Progress events for downloads
@@ -158,7 +525,7 @@
 * Fix commandDelegate.evalJs to actually bundle exec() calls.
 * Removed Cordova Settings File guide, added web shortcut to online doc.
 * Changed Cordova.plist BackupWebStorage setting from boolean to string (cloud, local, none)
-* 
+
 <br />
 
 ### 2.1.0 (20120913) ###

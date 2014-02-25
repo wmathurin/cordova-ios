@@ -23,6 +23,14 @@
 #import "CDVViewController.h"
 #import "CDVCommandDelegateImpl.h"
 
+@interface CDVCommandQueue () {
+    NSInteger _lastCommandQueueFlushRequestId;
+    __weak CDVViewController* _viewController;
+    NSMutableArray* _queue;
+    BOOL _currentlyExecuting;
+}
+@end
+
 @implementation CDVCommandQueue
 
 @synthesize currentlyExecuting = _currentlyExecuting;
@@ -58,10 +66,22 @@
 
 - (void)maybeFetchCommandsFromJs:(NSNumber*)requestId
 {
+    NSInteger rid = [requestId integerValue];
+
+    // An ID of 1 is a special case because that signifies the first request of
+    // the page. Since resetRequestId is called from webViewDidStartLoad, and the
+    // JS context at the time of webViewDidStartLoad is still that of the previous
+    // page, it's possible for requests from the previous page to come in after this
+    // point. We ignore these by enforcing that ID=1 be the first ID.
+    if ((_lastCommandQueueFlushRequestId == 0) && (rid != 1)) {
+        CDV_EXEC_LOG(@"Exec: Ignoring exec request from previous page.");
+        return;
+    }
+
     // Use the request ID to determine if we've already flushed for this request.
     // This is required only because the NSURLProtocol enqueues the same request
     // multiple times.
-    if ([requestId integerValue] > _lastCommandQueueFlushRequestId) {
+    if (rid > _lastCommandQueueFlushRequestId) {
         _lastCommandQueueFlushRequestId = [requestId integerValue];
         [self fetchCommandsFromJs];
     }
@@ -73,6 +93,7 @@
     NSString* queuedCommandsJSON = [_viewController.webView stringByEvaluatingJavaScriptFromString:
         @"cordova.require('cordova/exec').nativeFetchMessages()"];
 
+    CDV_EXEC_LOG(@"Exec: Flushed JS->native queue (hadCommands=%d).", [queuedCommandsJSON length] > 0);
     [self enqueCommandBatch:queuedCommandsJSON];
 }
 
@@ -87,21 +108,25 @@
 
         for (NSUInteger i = 0; i < [_queue count]; ++i) {
             // Parse the returned JSON array.
-            NSArray* commandBatch = [[_queue objectAtIndex:i] cdvjk_mutableObjectFromJSONString];
+            NSArray* commandBatch = [[_queue objectAtIndex:i] JSONObject];
 
             // Iterate over and execute all of the commands.
             for (NSArray* jsonEntry in commandBatch) {
-                CDVInvokedUrlCommand* command = [CDVInvokedUrlCommand commandFromJson:jsonEntry];
-                if (![self execute:command]) {
-#ifdef DEBUG
-                        NSString* commandJson = [jsonEntry cdvjk_JSONString];
-                        static NSUInteger maxLogLength = 1024;
-                        NSString* commandString = ([commandJson length] > maxLogLength) ?
-                        [NSString stringWithFormat:@"%@[...]", [commandJson substringToIndex:maxLogLength]] :
-                        commandJson;
+                @autoreleasepool {
+                    CDVInvokedUrlCommand* command = [CDVInvokedUrlCommand commandFromJson:jsonEntry];
+                    CDV_EXEC_LOG(@"Exec(%@): Calling %@.%@", command.callbackId, command.className, command.methodName);
 
-                        DLog(@"FAILED pluginJSON = %@", commandString);
+                    if (![self execute:command]) {
+#ifdef DEBUG
+                            NSString* commandJson = [jsonEntry JSONString];
+                            static NSUInteger maxLogLength = 1024;
+                            NSString* commandString = ([commandJson length] > maxLogLength) ?
+                                [NSString stringWithFormat:@"%@[...]", [commandJson substringToIndex:maxLogLength]] :
+                                commandJson;
+
+                            DLog(@"FAILED pluginJSON = %@", commandString);
 #endif
+                    }
                 }
             }
         }
@@ -128,20 +153,11 @@
         return NO;
     }
     BOOL retVal = YES;
-
+    double started = [[NSDate date] timeIntervalSince1970] * 1000.0;
     // Find the proper selector to call.
     NSString* methodName = [NSString stringWithFormat:@"%@:", command.methodName];
-    NSString* methodNameWithDict = [NSString stringWithFormat:@"%@:withDict:", command.methodName];
     SEL normalSelector = NSSelectorFromString(methodName);
-    SEL legacySelector = NSSelectorFromString(methodNameWithDict);
-    // Test for the legacy selector first in case they both exist.
-    if ([obj respondsToSelector:legacySelector]) {
-        NSMutableArray* arguments = nil;
-        NSMutableDictionary* dict = nil;
-        [command legacyArguments:&arguments andDict:&dict];
-        // [obj performSelector:legacySelector withObject:arguments withObject:dict];
-        objc_msgSend(obj, legacySelector, arguments, dict);
-    } else if ([obj respondsToSelector:normalSelector]) {
+    if ([obj respondsToSelector:normalSelector]) {
         // [obj performSelector:normalSelector withObject:command];
         objc_msgSend(obj, normalSelector, command);
     } else {
@@ -149,7 +165,10 @@
         NSLog(@"ERROR: Method '%@' not defined in Plugin '%@'", methodName, command.className);
         retVal = NO;
     }
-
+    double elapsed = [[NSDate date] timeIntervalSince1970] * 1000.0 - started;
+    if (elapsed > 10) {
+        NSLog(@"THREAD WARNING: ['%@'] took '%f' ms. Plugin should use a background thread.", command.className, elapsed);
+    }
     return retVal;
 }
 
