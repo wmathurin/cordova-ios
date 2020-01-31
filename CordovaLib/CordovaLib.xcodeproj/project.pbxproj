@@ -643,7 +643,7 @@
 				GCC_PREFIX_HEADER = CordovaLib_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
-					"WK_WEB_VIEW_ONLY=$(WK_WEB_VIEW_ONLY)",
+					"WK_WEB_VIEW_ONLY=1",
 					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -706,7 +706,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = CordovaLib_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"WK_WEB_VIEW_ONLY=$(WK_WEB_VIEW_ONLY)",
+					"WK_WEB_VIEW_ONLY=1",
 					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
